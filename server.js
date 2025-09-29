@@ -4,10 +4,15 @@ const cors = require('cors');
 const db = require('./config/db');
 
 const authRoutes = require('./routes/authRoutes');
+const reportRoutes = require('./routes/reportRoutes');
 
-const app = express();
+const app = express(); 
 app.use(express.json());
 app.use(cors());
+
+// Routes
+app.use('/api', reportRoutes);
+app.use('/api', authRoutes);
 
 // Health
 app.get('/api/health', (req, res) => {
@@ -15,8 +20,7 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', db: dbStatus, time: new Date().toISOString() });
 });
 
-// Routes
-app.use('/api', authRoutes);
-
 const PORT = process.env.SERVER_PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Server running at http://localhost:${PORT}/api/health`));
+app.listen(PORT, () => 
+  console.log(`🚀 Server running at http://localhost:${PORT}/api/health`)
+);
